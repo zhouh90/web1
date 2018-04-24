@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <configuration debug="true"> 调试模式下，可输出logback的内部日志信息 -->
+<configuration debug="false">
+
+
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.file}-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%level][%thread]:%logger{50} [%method:%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 [%file:%line]日志所在文件及行数 %msg%n消息及换行 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%level][%thread]:%logger{50} [%method:%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+
+
+	<!-- <root level="DEGUB">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE"/>
+	</root> -->
+	<root level="${log.level}">
+        <appender-ref ref="${log.appender}"/>
+    </root>
+</configuration>
