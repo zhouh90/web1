@@ -1,5 +1,0 @@
-
-解压war包：jar -xvf ct-doc.war
-
-本地：mvn clean install -Dtest -DfailIfNoTests=false
-上线打包：mvn clean install -Pproduct -Dmaven.test.skip=true
