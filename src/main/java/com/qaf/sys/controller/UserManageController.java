@@ -43,11 +43,9 @@ import com.qaf.sys.utils.mail.MailUtil;
  */
 @Controller
 @RequestMapping("/sys/user")
-public class UserManageController {
+public class UserManageController extends IBaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserManageController.class);
-
-	private static final int MD5_CNT = 3;
 
 	@Autowired
 	private UserService userService;
@@ -92,7 +90,7 @@ public class UserManageController {
 			g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
 			g.drawString(rand, 13 * i + 6, 28);
 		}
-		// 将字符保存到session中用于前端的验证
+		// 将字符保存到session中用于前端的验证 ---- 后期将会保存到redis
 		session.setAttribute("captcha", strCode);
 		g.dispose();
 
@@ -116,6 +114,7 @@ public class UserManageController {
 	@ResponseBody
 	public R doLogin(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("后台执行用户登录doLogin");
+		// 后期图片验证码从redis取
 		String realValidateCode = (String) request.getSession(true).getAttribute("captcha");
 		String validateCode = request.getParameter("captcha");// 验证码
 		if (validateCode == null || !validateCode.equalsIgnoreCase(realValidateCode)) {
@@ -124,7 +123,7 @@ public class UserManageController {
 		String userName = request.getParameter("userName");// 账号
 		String password = request.getParameter("passWord");// 密码
 		User user = userService.findUserByName(userName);
-		if (user != null && user.getPassWord().equals(MD5Util.md5(password, MD5_CNT))) {
+		if (user != null && user.getPassWord().equals(MD5Util.md5(password, MD5_CNT - 1))) {
 			request.getSession().setAttribute("userInfo", user);
 			return R.ok().put("nickName", user.getNickName());
 		}
@@ -156,6 +155,10 @@ public class UserManageController {
 			logger.info("修改密码参数出错----两次密码输入不一致");
 			return R.error(-1, "两次密码不一致");
 		}
+		if (newPassWord1.equals(oldPassWord)) {
+			logger.info("修改密码参数出错----新密码不能跟原密码相同");
+			return R.error(-1, "新密码不能跟原密码相同");
+		}
 
 		User user = userService.findUserByName(userName);
 		if (user == null) {
@@ -163,12 +166,12 @@ public class UserManageController {
 			return R.error(-1, "系统异常");
 		}
 
-		if (!user.getPassWord().equals(MD5Util.md5(oldPassWord, MD5_CNT))) {
+		if (!user.getPassWord().equals(MD5Util.md5(oldPassWord, MD5_CNT - 1))) {
 			logger.info("修改密码参数出错----原始密码不正确");
 			return R.error(-1, "原始密码不正确");
 		}
 
-		String newPass = MD5Util.md5(newPassWord1, MD5_CNT);
+		String newPass = MD5Util.md5(newPassWord1, MD5_CNT - 1);
 		if (userService.updatePassWordByName(userName, newPass) == 1) {
 			return R.ok();
 		}

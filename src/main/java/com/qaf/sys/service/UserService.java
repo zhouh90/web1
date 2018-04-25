@@ -36,4 +36,12 @@ public interface UserService {
 	 */
 	User findUserByUserNameAndEmail(String userName, String email);
 
+	/**
+	 * 新增一个用户
+	 * 
+	 * @param user
+	 * @return
+	 */
+	int addUser(User user);
+
 }

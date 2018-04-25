@@ -70,6 +70,7 @@
 		<script src="${contextPath}/resources/common/js/jquery.min.js"></script>
 		<script src="${contextPath}/resources/common/js/bootstrap.min.js"></script>
 		<script src="${contextPath}/resources/common/js/toast.js"></script>
+		<script src="${contextPath}/resources/common/js/md5.js"></script>
 		<script src="${contextPath}/resources/common/common.js"></script>
 		<script src="${contextPath}/resources/common/canvas-particle.js"></script>
 		<script src="${contextPath}/resources/js/sys/login.js" ></script>

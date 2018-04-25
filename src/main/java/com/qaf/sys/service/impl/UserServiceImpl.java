@@ -54,4 +54,10 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public int addUser(User user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

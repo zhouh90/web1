@@ -72,6 +72,8 @@ function doLogin() {
 		return;
 	}
 	showtoastFromDiv("login-form","正在登录,请稍后...","inline-block",500);
+	passWord = hex_md5(passWord);
+	$('#passWord').val(passWord);
 	$.ajax({  
         cache: true,  
         type: "POST",  
@@ -94,8 +96,10 @@ function doLogin() {
 //						addCookie("passWord", passWord, 7, "/");
                     }
             		location.href = "/home";
-            		sessionStorage.setItem("nickName",data.nickName);
-            		sessionStorage.setItem("userName",userName);
+//            		sessionStorage.setItem("nickName",data.nickName);
+//            		sessionStorage.setItem("userName",userName);
+            		addCookie("nickName", data.nickName, 30, "/");
+            		addCookie("userName", userName, 30, "/");
             		console.log('登陆成功');
             	} else {
             		showtoastFromDiv("login-form",data.msg,"inline-block",1000);

@@ -19,7 +19,16 @@ function resetPassword(){
 		return;
 	}
 	
-	$('#userName').val(sessionStorage.getItem('userName'));
+	$('#userName').val(getCookieValue("userName"));
+	
+	oldPassWord = hex_md5(oldPassWord);
+	$('#oldPassWord').val(oldPassWord);
+	
+	newPassWord1 = hex_md5(newPassWord1);
+	$('#newPassWord1').val(newPassWord1);
+
+	newPassWord2 = hex_md5(newPassWord2);
+	$('#newPassWord2').val(newPassWord2);
 	
 	$.ajax({  
         cache: true,  
