@@ -31,4 +31,9 @@ public class UserDaoImpl implements UserDao {
 		return sqlSession.update("updateByUserName", updateUser);
 	}
 
+	@Override
+	public int addUser(User user) {
+		return sqlSession.insert("addUser", user);
+	}
+
 }

@@ -57,5 +57,27 @@
 		WHERE
 			user_name = #{userName}
 	</update>
+	
+	<sql id="sys-user-cols">
+		nick_name,
+		user_name,
+		pass_word,
+		email,
+		mobile,
+		create_time
+	</sql>
+	
+	<insert id="addUser" parameterType="com.qaf.sys.model.User">
+		INSERT INTO sys_user (
+			<include refid="sys-user-cols" />
+		) VALUES (
+			#{nickName},
+			#{userName},
+			#{passWord},
+			#{email},
+			#{mobile},
+			#{createTime}
+		)
+	</insert>
 
 </mapper>

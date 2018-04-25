@@ -1,8 +1,11 @@
 package com.qaf.sys.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +22,9 @@ import com.qaf.sys.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+	@Autowired
 	private UserDao userDao;
 
 	@Override
@@ -56,7 +60,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int addUser(User user) {
-		// TODO Auto-generated method stub
+		if (user == null) {
+			return 0;
+		}
+		try {
+			user.setCreateTime(new Date());
+			return userDao.addUser(user);
+		} catch (Exception e) {
+			logger.info("保存新用户异常---msg:{}", e.getMessage());
+		}
 		return 0;
 	}
 
