@@ -72,8 +72,8 @@ function doLogin() {
 		return;
 	}
 	showtoastFromDiv("login-form","正在登录,请稍后...","inline-block",500);
-	passWord = hex_md5(passWord);
-	$('#passWord').val(passWord);
+	var md5PassWord = hex_md5(passWord);
+	$('#passWord').val(md5PassWord);
 	$.ajax({  
         cache: true,  
         type: "POST",  
@@ -104,6 +104,7 @@ function doLogin() {
             	} else {
             		showtoastFromDiv("login-form",data.msg,"inline-block",1000);
             		//错误后刷新验证码
+            		$('#passWord').val(passWord);
             		$('#captcha').val('');
         	    	$('#captchaImage').attr("src", "/sys/user/captcha?timestamp=" + (new Date()).valueOf());
             	}

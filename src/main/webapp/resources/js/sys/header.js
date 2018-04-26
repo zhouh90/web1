@@ -1,10 +1,7 @@
 $(function(){
-	var userName = sessionStorage.getItem("nickName");
-	console.log("1:"+userName);
+	var userName = getCookieValue("nickName");
 	if( typeof(userName) == 'undefined' || userName == null || userName == 'null'){
-		userName = getCookieValue("nickName");
-		var account  = getCookieValue("userName");
-		console.log("2:"+userName+"---account:"+account);
+		userName = "平台用户";
 	}
 	$('#user-name').html(userName+' <span class="caret"></span>');
 	

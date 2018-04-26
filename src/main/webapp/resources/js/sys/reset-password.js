@@ -21,14 +21,14 @@ function resetPassword(){
 	
 	$('#userName').val(getCookieValue("userName"));
 	
-	oldPassWord = hex_md5(oldPassWord);
-	$('#oldPassWord').val(oldPassWord);
+	var md5OldPassWord = hex_md5(oldPassWord);
+	$('#oldPassWord').val(md5OldPassWord);
 	
-	newPassWord1 = hex_md5(newPassWord1);
-	$('#newPassWord1').val(newPassWord1);
+	var md5NewPassWord1 = hex_md5(newPassWord1);
+	$('#newPassWord1').val(md5NewPassWord1);
 
-	newPassWord2 = hex_md5(newPassWord2);
-	$('#newPassWord2').val(newPassWord2);
+	var md5NewPassWord2 = hex_md5(newPassWord2);
+	$('#newPassWord2').val(md5NewPassWord2);
 	
 	$.ajax({  
         cache: true,  
@@ -54,9 +54,9 @@ function resetPassword(){
             		console.log('密码修改成功');
             	} else {
             		showtoastFromDiv("reset-form",data.msg,"inline-block",3000);
-            		$('#oldPassWord').val('');
-        	    	$('#newPassWord1').val('');
-        	    	$('#newPassWord2').val('');
+            		$('#oldPassWord').val(oldPassWord);
+        	    	$('#newPassWord1').val(newPassWord1);
+        	    	$('#newPassWord2').val(newPassWord2);
             	}
         	}
         }  
