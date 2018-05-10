@@ -1,6 +1,8 @@
 package com.qaf.sys.controller.interceptor;
 
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +17,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @描述
  */
 public class ViewInterceptor implements HandlerInterceptor {
+
+	private static final Set<String> white_urls = new HashSet<>();
+	static {
+		white_urls.add("new_account");
+		white_urls.add("captcha");
+		white_urls.add("forgot_password");
+		white_urls.add("sendEmail");
+		white_urls.add("checkEmail");
+		white_urls.add("checkAccount");
+		white_urls.add("addUser");
+	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3) throws Exception {
@@ -31,9 +44,14 @@ public class ViewInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String requestUrl = request.getRequestURI();
-		if (requestUrl.contains("captcha") || requestUrl.contains("forgot_password") || requestUrl.contains("sendEmail") || requestUrl.contains("checkEmail")) {
-			return true;
+		for (String subUrl : white_urls) {
+			if (requestUrl.contains(subUrl)) {
+				return true;
+			}
 		}
+//		if (requestUrl.contains("new_account") || requestUrl.contains("captcha") || requestUrl.contains("forgot_password") || requestUrl.contains("sendEmail") || requestUrl.contains("checkEmail")) {
+//			return true;
+//		}
 		// 进入登录页面，判断session中是否有key，有的话重定向到首页，否则进入登录界面
 		if (requestUrl.contains("login") || requestUrl.contains("doLogin")) {
 			if (request.getSession().getAttribute("userInfo") != null) {

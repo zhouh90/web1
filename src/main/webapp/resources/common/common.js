@@ -697,3 +697,6 @@ function addCookie(name, value, days, path) {
 	document.cookie = name + "=" + value + _expires + path;
 }
 
+function goTo(url){
+	location.href = url;
+}

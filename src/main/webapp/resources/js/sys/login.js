@@ -77,9 +77,9 @@ function doLogin() {
 	$.ajax({  
         cache: true,  
         type: "POST",  
-        url:"/sys/user/doLogin",  
+        url:"/sys/user/doLogin",
+        async: false,
         data:$('#login-form').serialize(),
-        async: false,  
         error: function(request) {  
             showtoastFromDiv("login-form","请求服务器失败，请重新登录！","inline-block",1000);
         },  

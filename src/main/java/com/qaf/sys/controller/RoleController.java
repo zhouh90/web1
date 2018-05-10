@@ -46,24 +46,33 @@ public class RoleController extends IBaseController {
 		return R.ok();
 	}
 
-	@RequestMapping("/add")
+	@RequestMapping("/addUser")
 	@ResponseBody
 	public R addUser(HttpServletRequest request, HttpServletResponse response) {
-		String userName = request.getParameter("username");
-		String nickName = request.getParameter("nickname");
-		String passWord = request.getParameter("password");
+		String userName = request.getParameter("userName");
+		String nickName = request.getParameter("nickName");
+		String passWord1 = request.getParameter("passWord1");
+		String passWord2 = request.getParameter("passWord2");
 		String email = request.getParameter("email");
 		String captcha = request.getParameter("captcha");
+
+		if (StringUtils.isBlank(passWord1) || !passWord1.equals(passWord2)) {
+			logger.info("add account--password is blank or two passwords are different");
+			return R.error(-1, "密码为空或两次输入密码不一致");
+		}
 
 		User u = userService.findUserByName(userName);
 		if (u != null) {
 			logger.info("add account ---- username has already exist");
 			return R.error(-1, "该用户名已经被注册,请换个用户名注册");
 		}
-		// TODO 校验图片验证码
-
+		String realCode = (String) request.getSession(true).getAttribute("captcha");
+		if (StringUtils.isBlank(captcha) || !captcha.equalsIgnoreCase(realCode)) {
+			logger.info("add account ---- captcha is blank or captcha is not equals to realCode");
+			return R.error(-1, "图形验证码不正确");
+		}
 		u = new User();
-		passWord = MD5Util.md5(passWord, MD5_CNT - 1);
+		String passWord = MD5Util.md5(passWord1, MD5_CNT - 1);
 		u.setUserName(userName);
 		u.setPassWord(passWord);
 		u.setEmail(email);
@@ -71,7 +80,8 @@ public class RoleController extends IBaseController {
 		u.setMobile(null);
 		int r = userService.addUser(u);
 		if (r == 1) {
-			return R.ok("注册成功！");
+			request.getSession().setAttribute("userInfo", u);
+			return R.ok("注册成功！").put("nickName", nickName).put("userName", userName);
 		}
 		return R.error(-1, "注册失败！");
 	}

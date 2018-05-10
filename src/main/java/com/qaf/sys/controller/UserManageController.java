@@ -114,7 +114,6 @@ public class UserManageController extends IBaseController {
 	@ResponseBody
 	public R doLogin(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("后台执行用户登录doLogin");
-		// 后期图片验证码从redis取
 		String realValidateCode = (String) request.getSession(true).getAttribute("captcha");
 		String validateCode = request.getParameter("captcha");// 验证码
 		if (validateCode == null || !validateCode.equalsIgnoreCase(realValidateCode)) {
@@ -187,7 +186,6 @@ public class UserManageController extends IBaseController {
 		if (user == null) {
 			return R.error(-1, "该用户未注册或邮箱不正确！");
 		}
-		System.out.println("id:" + user.getId());
 		String key = buildEamilCodeKey(userName, email);
 		String randomNum = generateRandomNum(6);
 		System.out.println("key:" + key);

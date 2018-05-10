@@ -56,6 +56,8 @@
 			          <div class="col-md-12">
 			          	<div class="control-wrapper">
 			          		<input type="button" value="登录" class="btn btn-info" onClick="return doLogin();">
+			          		&nbsp;&nbsp;
+			          		<a href="${contextPath}/new_account" >没有账号？注册一个</a>
 			          		<a href="${contextPath}/forgot_password" class="text-right pull-right">忘记密码?</a>
 			          	</div>
 			          </div>

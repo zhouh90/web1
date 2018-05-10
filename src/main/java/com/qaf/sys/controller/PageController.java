@@ -40,4 +40,10 @@ public class PageController {
 		return "/sys/reset-password";
 	}
 
+	@RequestMapping("new_account")
+	public String newAccount() {
+		logger.info("enter create new account page");
+		return "/sys/create-new-account";
+	}
+
 }
